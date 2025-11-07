@@ -13,7 +13,7 @@ all: all-apt all-cargo config
 # APT STUFF
 .PHONY: apt-update all-apt
 
-all-apt: /usr/bin/fzf /usr/bin/nvim /usr/bin/stow
+all-apt: /usr/bin/fzf /usr/bin/nvim
 
 apt-update:
 	sudo apt update --yes
@@ -27,7 +27,12 @@ apt-update:
 /usr/bin/stow: apt-update
 	sudo apt install --yes stow
 
+/usr/bin/curl: apt-update
+	sudo apt install --yes curl
+
 # CARGO STUFF
+# TODO: find a better package manager for these, so that we get man pages and
+# shell completions and stuff like that.
 CARGO_BIN = $(HOME)/.cargo/bin
 CARGO = $(CARGO_BIN)/cargo
 RUSTC = $(CARGO_BIN)/rustc
@@ -56,7 +61,7 @@ CARGO_BINS = $(foreach pair,$(CARGO_PACKAGES),$(CARGO_BIN)/$(word 1,$(subst :, ,
 .PHONY: all-cargo
 all-cargo: $(CARGO_BINS)
 
-$(CARGO) $(RUSTC) &:
+$(CARGO) $(RUSTC) &: /usr/bin/curl
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable --no-modify-path -y
 
 $(CARGO_BIN)/%: $(CARGO)
