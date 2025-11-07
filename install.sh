@@ -2,4 +2,4 @@
 
 set -exu
 
-exec make -f ~/dotfiles/INSTALL.mak
+exec make -j -f ~/dotfiles/INSTALL.mak all
