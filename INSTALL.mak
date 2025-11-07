@@ -43,7 +43,7 @@ CARGO_PACKAGES = \
 	bat:bat \
 	btm:bottom \
 	broot:broot \
-	dust:dust \
+	dust:du-dust \
 	eza:eza \
 	fd:fd-find \
 	hurl:hurl \
