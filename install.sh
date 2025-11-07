@@ -21,7 +21,7 @@ export CARGO_TARGET_DIR="$HOME/.local/state/cargo-dotfiles/target"
 (
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable --no-modify-path -y
   mkdir -p "$CARGO_TARGET_DIR"
-  cargo install --locked $INSTALL_CARGO_PACKAGES
+  cargo install $INSTALL_CARGO_PACKAGES
 ) 2>&1 | tee cargo-installs.log &
 
 wait
