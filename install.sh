@@ -11,21 +11,17 @@ export INSTALL_CARGO_PACKAGES="bat bottom du-dust eza fd-find hurl hyperfine jj-
 export CARGO_TARGET_DIR="$HOME/.local/state/cargo-dotfiles/target"
 
 (
-  set -exu
-
   sudo apt update --yes
   sudo apt install --yes $INSTALL_APT_PACKAGES
   sudo apt upgrade --yes
 
   stow --target "$HOME/.config" --dir "$HOME/dotfiles" config
-) &
+) 2>&1 | tee apt-installs.log &
 
 (
-  set -exu
-
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable --no-modify-path -y
   mkdir -p "$CARGO_TARGET_DIR"
   cargo install --locked $INSTALL_CARGO_PACKAGES
-) &
+) 2>&1 | tee cargo-installs.log &
 
 wait
