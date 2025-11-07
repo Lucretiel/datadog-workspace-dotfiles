@@ -36,7 +36,7 @@ apt-update:
 CARGO_BIN = $(HOME)/.cargo/bin
 CARGO = $(CARGO_BIN)/cargo
 RUSTC = $(CARGO_BIN)/rustc
-CARGO_INSTALL = $(CARGO) install --locked --quiet
+CARGO_INSTALL = $(CARGO) install --locked
 
 # Left is the name of the binary; right is the name of the rust crate
 CARGO_PACKAGES = \
