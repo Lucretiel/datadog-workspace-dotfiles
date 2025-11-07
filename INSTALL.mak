@@ -47,7 +47,7 @@ CARGO_PACKAGES = \
 	eza:eza \
 	fd:fd-find \
 	hurl:hurl \
-	hyperfine:hyperfine \stow
+	hyperfine:hyperfine \
 	jj:jj-cli \
 	procs:procs \
 	rg:ripgrep \
