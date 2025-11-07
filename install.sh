@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-set -euo pipefail
+set -exu
 
 exec make -f ~/dotfiles/INSTALL.mak
