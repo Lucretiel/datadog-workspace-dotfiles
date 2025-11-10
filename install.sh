@@ -2,8 +2,6 @@
 
 set -exu
 
-export HOME="/home/bits"
-
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export INSTALL_APT_PACKAGES="fzf neovim stow"
@@ -24,5 +22,7 @@ export CARGO_TARGET_DIR="$HOME/.local/state/cargo-dotfiles/target"
   cargo install --locked cargo-binstall
   cargo binstall --locked -y $INSTALL_CARGO_PACKAGES
 ) 2>&1 | tee cargo-installs.log &
+
+fish "$HOME/dotfiles/variables.fish" 2>&1 | tee fish-variables.log &
 
 wait

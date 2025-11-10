@@ -1,5 +1,3 @@
-# Sigh...
-
 set -Ux EDITOR nvim
 set -Ux LESS iMR
 set -Ux STARSHIP_SHELL fish
