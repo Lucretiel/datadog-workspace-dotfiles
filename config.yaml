@@ -1,0 +1,10 @@
+shell: fish
+region: us-east-1
+dotfiles: https://github.com/Lucretiel/datadog-workspace-dotfiles/
+vscode-extensions:
+  - "BazelBuild.vscode-bazel"
+  - "biomejs.biome"
+  - "ms-python.python"
+  - "redhat.vscode-yaml"
+  - "rust-lang.rust-analyzer"
+  - "tamasfe.even-better-toml"
