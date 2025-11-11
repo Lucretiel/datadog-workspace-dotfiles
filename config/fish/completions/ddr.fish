@@ -1,1 +1,1 @@
-source (ddr completion fish | psub)
+ddr completion fish | source

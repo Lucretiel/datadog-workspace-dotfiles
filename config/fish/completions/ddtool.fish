@@ -1,1 +1,1 @@
-source (ddtool completion fish | psub)
+ddtool completion fish | source

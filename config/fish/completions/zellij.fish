@@ -1,1 +1,1 @@
-source (zellij setup --generate-completion fish | psub)
+zellij setup --generate-completion fish | source

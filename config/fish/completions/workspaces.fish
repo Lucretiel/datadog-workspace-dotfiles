@@ -1,1 +1,1 @@
-source (workspaces completion fish | psub)
+workspaces completion fish | source
