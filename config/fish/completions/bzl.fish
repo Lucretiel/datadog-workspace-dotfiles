@@ -56,7 +56,7 @@ function __fish_bzl_get_targets
                     echo "//$pkg_name:"
                     echo "//$pkg_name:all"
                 end
-            end | head -20
+            end
         end
     # If token contains colon but no //, it's a relative target
     else if string match -q '*:*' -- $token
@@ -65,48 +65,40 @@ function __fish_bzl_get_targets
         # If pkg is empty (user typed ":target"), use current package
         if test -z "$pkg"
             set pkg $current_pkg
-        else
-            # pkg is relative to current directory, make it absolute from workspace root
-            if test -n "$current_pkg"
-                set pkg "$current_pkg/$pkg"
-            end
+        # pkg is relative to current directory, make it absolute from workspace root
+        else if test -n "$current_pkg"
+            set pkg "$current_pkg/$pkg"
         end
 
         # Try to query targets in this package
         set -l query_result (bzl query "//$pkg:*" 2>/dev/null)
         if test $status -eq 0
-            # Strip package prefix for relative completion
-            if string match -q ':*' -- $token
-                # User typed just ":", show as ":target"
-                for target in $query_result
-                    echo (string replace -r '^//[^:]*' '' -- $target)
-                end
-            else
-                # User typed "path:", show as "path:target"
-                set -l rel_pkg (string replace -r ':.*$' '' -- $token)
-                for target in $query_result
-                    echo (string replace -r "^//[^:]*" "$rel_pkg" -- $target)
-                end
+            # Determine replacement prefix for relative completion
+            set -l replacement ""
+            if not string match -q ':*' -- $token
+                # User typed "path:", keep the path part
+                set replacement (string replace -r ':.*$' '' -- $token)
+            end
+
+            # Replace package prefix in all results
+            for target in $query_result
+                echo (string replace -r '^//[^:]*' "$replacement" -- $target)
             end
         end
     # If token looks like a path (contains /), try to complete it (relative to current dir)
     else if string match -q '*/*' -- $token
-        # Find BUILD files in this directory
-        if test -d "$token"
-            find "$token" -maxdepth 2 \( -name "BUILD.bazel" -o -name "BUILD" \) 2>/dev/null | while read -l build_file
-                set -l package_dir (dirname $build_file)
-                set -l pkg_name (string replace -r '^\./?' '' -- $package_dir)
-                echo "$pkg_name:"
-                echo "$pkg_name:all"
-            end | head -10
-        else
-            set -l parent_dir (dirname "$token")
-            find "$parent_dir" -maxdepth 2 \( -name "BUILD.bazel" -o -name "BUILD" \) 2>/dev/null | while read -l build_file
-                set -l package_dir (dirname $build_file)
-                set -l pkg_name (string replace -r '^\./?' '' -- $package_dir)
-                echo "$pkg_name:"
-                echo "$pkg_name:all"
-            end | head -10
+        # Determine search directory
+        set -l search_dir "$token"
+        if not test -d "$token"
+            set search_dir (dirname "$token")
+        end
+
+        # Find BUILD files and suggest packages
+        find "$search_dir" -maxdepth 2 \( -name "BUILD.bazel" -o -name "BUILD" \) 2>/dev/null | while read -l build_file
+            set -l package_dir (dirname $build_file)
+            set -l pkg_name (string replace -r '^\./?' '' -- $package_dir)
+            echo "$pkg_name:"
+            echo "$pkg_name:all"
         end
     else
         # Complete common target patterns
