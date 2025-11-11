@@ -5,7 +5,7 @@ set -exu
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export INSTALL_APT_PACKAGES="fzf neovim stow"
-export INSTALL_CARGO_PACKAGES="bat bottom broot du-dust eza fd-find xh hyperfine jj-cli procs ripgrep sd starship zellij zoxide"
+export INSTALL_CARGO_PACKAGES="bat bottom broot difftastic du-dust eza fd-find xh hyperfine jj-cli procs ripgrep sd starship zellij zoxide"
 export CARGO_TARGET_DIR="$HOME/.local/state/cargo-dotfiles/target"
 
 (
