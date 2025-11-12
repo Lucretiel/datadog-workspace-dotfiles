@@ -1,28 +1,26 @@
-#!/usr/bin/env sh
+#!/usr/bin/env dash
 
 set -exu
 
-export PATH="$HOME/.cargo/bin:$PATH"
-
-export INSTALL_APT_PACKAGES="fzf neovim stow"
-export INSTALL_CARGO_PACKAGES="bat bottom broot difftastic du-dust eza fd-find xh hyperfine jj-cli procs ripgrep sd starship zellij zoxide"
-export CARGO_TARGET_DIR="$HOME/.local/state/cargo-dotfiles/target"
+export PATH="$HOME/.cargo/bin:$HOME/.nix-profile/bin:$PATH"
 
 (
-  sudo apt update --yes
-  sudo apt install --yes $INSTALL_APT_PACKAGES
-  sudo apt upgrade --yes
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | dash -s -- --default-toolchain stable --no-modify-path -y
+) 2>&1 | tee rustup-install.log &
+
+(
+  fish "$HOME/dotfiles/variables.fish"
+) 2>&1 | tee fish-variables.log &
+
+(
+  curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install | dash -s -- --no-daemon --yes --no-modify-profile
+
+  nix --extra-experimental-features 'nix-command flakes' profile add $(printf 'nixpkgs#%s ' \
+    bacon bat biff bottom broot difftastic dust eza fd fzf hyperfine jq \
+    jujutsu neovim procs ripgrep sd starship stow xh zellij zoxide
+  )
 
   stow --target "$HOME/.config" --dir "$HOME/dotfiles" config
-) 2>&1 | tee apt-installs.log &
-
-(
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable --no-modify-path -y
-  mkdir -p "$CARGO_TARGET_DIR"
-  cargo install --locked cargo-binstall
-  cargo binstall --locked -y $INSTALL_CARGO_PACKAGES
-) 2>&1 | tee cargo-installs.log &
-
-fish "$HOME/dotfiles/variables.fish" 2>&1 | tee fish-variables.log &
+) 2>&1 | tee nix-install.log &
 
 wait
