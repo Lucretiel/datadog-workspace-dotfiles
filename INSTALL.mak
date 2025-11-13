@@ -31,7 +31,7 @@ fish-variables: /usr/bin/fish
 
 # NIX STUFF
 NIX_PROFILE = $(HOME)/.nix-profile
-NIX_BIN = $(HOME)/bin
+NIX_BIN = $(NIX_PROFILE)/bin
 
 .PHONY: install-nix
 
