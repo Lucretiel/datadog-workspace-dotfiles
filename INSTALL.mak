@@ -2,7 +2,7 @@ HOME = /home/bits
 
 .PHONY: all
 
-all: install-rust install-configs install-nix fish-variables
+all: install-rust install-configs install-bins install-nix fish-variables
 
 # CARGO STUFF
 CARGO_BIN = $(HOME)/.cargo/bin
@@ -16,16 +16,18 @@ $(CARGO) $(RUSTC) &: /usr/bin/curl /usr/bin/dash
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | dash -s -- --default-toolchain stable --no-modify-path -y
 
 # CONFIG STUFF
-CONFIG = $(HOME)/.config
 DOTFILES = $(HOME)/dotfiles
 
-.PHONY: install-configs fish-variables
+.PHONY: install-configs fish-variables install-bins
 
 install-configs: /usr/bin/stow
-	stow --target $(CONFIG) --dir $(DOTFILES) config
+	stow --target $(HOME)/.config --dir $(DOTFILES) config
+
+install-bins: /usr/bin/stow
+	stow --target $(HOME)/.local/bin --dir $(DOTFILES) bin
 
 fish-variables: /usr/bin/fish
-	fish $(DOTFILES)/variables.fish
+	fish --no-config $(DOTFILES)/variables.fish
 
 # NIX STUFF
 NIX_PROFILE = $(HOME)/.nix-profile
@@ -42,6 +44,9 @@ $(NIX_BIN)/nix: /nix /usr/bin/dash /usr/bin/curl
 	sudo mkdir -p /nix
 	sudo chown bits:root /nix
 	sudo chmod 755 /nix
+
+$(NIX_BIN)/%s: $(NIX_BIN)/nix
+	$(NIX_BIN)/nix --extra-experimental-features 'nix-command flakes' profile add nixpkgs#%s
 
 # GENERAL UTILITIES
 /usr/bin/stow:

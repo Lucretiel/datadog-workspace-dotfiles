@@ -21,6 +21,7 @@ export PATH="$HOME/.cargo/bin:$HOME/.nix-profile/bin:$PATH"
   )
 
   stow --target "$HOME/.config" --dir "$HOME/dotfiles" config
+  stow --target "$HOME/.local/bin" --dir "$HOME/dotfiles" bin
 ) 2>&1 | tee nix-install.log &
 
 wait

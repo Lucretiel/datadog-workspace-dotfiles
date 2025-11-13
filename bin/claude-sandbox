@@ -1,0 +1,3 @@
+#!/usr/bin/dash
+
+exec ai-kennel launch claude -- --dangerously-skip-permissions "$@"
