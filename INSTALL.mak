@@ -12,7 +12,7 @@ RUSTC = $(CARGO_BIN)/rustc
 .PHONY: install-rust
 install-rust: $(CARGO) $(RUSTC)
 
-$(CARGO) $(RUSTC) &: /usr/bin/curl /usr/bin/dash
+$(CARGO) $(RUSTC) &: | /usr/bin/curl /usr/bin/dash
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | dash -s -- --default-toolchain stable --no-modify-path -y
 
 # CONFIG STUFF
@@ -37,7 +37,7 @@ NIX_BIN = $(NIX_PROFILE)/bin
 
 install-nix: $(NIX_BIN)/nix
 
-$(NIX_BIN)/nix: /nix /usr/bin/dash /usr/bin/curl
+$(NIX_BIN)/nix: | /nix /usr/bin/dash /usr/bin/curl
 	curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install | dash -s -- --no-daemon --yes --no-modify-profile
 
 /nix:
@@ -45,7 +45,7 @@ $(NIX_BIN)/nix: /nix /usr/bin/dash /usr/bin/curl
 	sudo chown bits:root /nix
 	sudo chmod 755 /nix
 
-$(NIX_BIN)/%: $(NIX_BIN)/nix
+$(NIX_BIN)/%: | $(NIX_BIN)/nix
 	$(NIX_BIN)/nix --extra-experimental-features 'nix-command flakes' profile add nixpkgs#$*
 
 # GENERAL UTILITIES
