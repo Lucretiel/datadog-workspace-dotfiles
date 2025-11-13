@@ -45,8 +45,8 @@ $(NIX_BIN)/nix: /nix /usr/bin/dash /usr/bin/curl
 	sudo chown bits:root /nix
 	sudo chmod 755 /nix
 
-$(NIX_BIN)/%s: $(NIX_BIN)/nix
-	$(NIX_BIN)/nix --extra-experimental-features 'nix-command flakes' profile add nixpkgs#%s
+$(NIX_BIN)/%: $(NIX_BIN)/nix
+	$(NIX_BIN)/nix --extra-experimental-features 'nix-command flakes' profile add nixpkgs#$*
 
 # GENERAL UTILITIES
 /usr/bin/stow:
