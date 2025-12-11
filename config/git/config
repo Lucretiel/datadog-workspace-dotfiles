@@ -1,2 +1,11 @@
 [pull]
 	ff = only
+[maintenance]
+	strategy = geometric
+[diff]
+	external = difft
+[feature]
+	manyFiles = true
+[alias]
+	superlog = log --oneline --graph --all --decorate
+	root = rev-parse --show-toplevel
