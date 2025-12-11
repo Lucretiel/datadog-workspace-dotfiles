@@ -17,7 +17,7 @@ export PATH="$HOME/.cargo/bin:$HOME/.nix-profile/bin:$PATH"
 
   nix --extra-experimental-features 'nix-command flakes' profile add $(printf 'nixpkgs#%s ' \
     bacon bat biff bottom broot difftastic dust eza fd fzf hyperfine jq \
-    jujutsu neovim procs ripgrep sd starship stow xh zellij zoxide
+    jujutsu neovim procs protobuf ripgrep sd starship stow xh zellij zoxide
   )
 
   stow --target "$HOME/.config" --dir "$HOME/dotfiles" config

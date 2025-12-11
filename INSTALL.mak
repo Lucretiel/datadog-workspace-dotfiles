@@ -60,3 +60,6 @@ $(NIX_BIN)/%: | $(NIX_BIN)/nix
 
 /usr/bin/fish:
 	sudo apt install --yes fish
+
+/usr/bin/protoc:
+	sudo apt install --yes protobuf-compiler
