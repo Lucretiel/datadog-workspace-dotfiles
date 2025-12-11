@@ -1,0 +1,3 @@
+#!/usr/bin/dash
+
+exec ~/.nix-profile/bin/eza --group-directories-first $argv
