@@ -1,0 +1,3 @@
+#!/usr/bin/dash
+
+exec fzf --walker 'dir,follow,hidden'
